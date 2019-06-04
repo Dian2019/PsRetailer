@@ -92,7 +92,7 @@ namespace WindowsFormsApp1
         {
             // Specify what is done when a file is changed, created, or deleted.
             //Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
-            MessageBox.Show($"File: {e.FullPath} {e.ChangeType}");
+            //MessageBox.Show($"File: {e.FullPath} {e.ChangeType}");
             OnFileChange();
 
 
@@ -134,6 +134,7 @@ namespace WindowsFormsApp1
         {
             DataTable dt = new DataTable();
             dt = GetDataTable();
+            int numOfBill = 0;
 
             int latestRecCount = dt.Rows.Count;
 
@@ -145,31 +146,36 @@ namespace WindowsFormsApp1
                 {
                     for (var n = 0; n < dt.Rows.Count; n++)
                     {
-                        val = dt.Rows[n]["Number"].ToString();
+                        val = dt.Rows[n]["Number"].ToString() + " : " + dt.Rows[n]["Shopcode"].ToString();
 
                         if (Convert.ToInt16(dt.Rows[n]["Number"]) > xmlLastNumber) //Last Number = 5504 xmlLastNumber
                         {
                             amt += Convert.ToDouble(dt.Rows[n]["Amount"]);
-                            val += " :" + dt.Rows[n]["Amount"].ToString() + " :" + amt.ToString();
+                            val += " : " + dt.Rows[n]["Amount"].ToString() + " :" + amt.ToString();
                             m_streamWriter.WriteLine(val);
                             m_streamWriter.Flush();
+                            numOfBill += 1;
                         }
                         else
                         {
                             break;
                         }
                     }
-                    CreateConfigurationFile(_number: Convert.ToInt16(dt.Rows[0]["Number"]), update: true);
-
+                    CreateConfigurationFile(_recCount: latestRecCount, _number: Convert.ToInt16(dt.Rows[0]["Number"]), update: true);
 
                     m_streamWriter.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(), latestRecCount);
                     m_streamWriter.Flush();
+
                     NotifyIcon1.Icon = SystemIcons.Application;
                     NotifyIcon1.Visible = true;
                     NotifyIcon1.BalloonTipText = DateTime.Now.ToLongTimeString();
                     NotifyIcon1.ShowBalloonTip(1000);
 
-                    CreateConfigurationFile(_recCount: latestRecCount, update: true);
+                    //if (numOfBill >= 2 || amt >= 50)
+                    //{
+                    //    do some process
+                    //}
+                    //CreateConfigurationFile(_recCount: latestRecCount, update: true);
                 }
             }
         }
@@ -279,73 +285,7 @@ namespace WindowsFormsApp1
                 _number[_i].InnerText);
             }
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string TestSelectPath = @"D:\PointSoft Dn\Probation Project\20190321\DBT.DBF";
-
-
-            //using (Stream fis = File.Open(TestSelectPath,
-            //                            FileMode.OpenOrCreate,
-            //                            FileAccess.ReadWrite))
-            //{
-            //    using (var reader = new DBFReader(new MemoryStream(TestSelectPath))
-            //    {
-            //        DataMemoLoc = Path.ChangeExtension(TestSelectPath, "DBT")
-            //    };
-            //    //var readValues = reader.DynamicAllRecords();
-            //};
-
-
-            //var reader = new DBFReader(TestSelectPath);
-
-            //Open the stream and read it back.
-            //using (FileStream fs = File.OpenRead(TestSelectPath))
-            //{
-            //    byte[] b = new byte[1024];
-            //    UTF8Encoding temp = new UTF8Encoding(true);
-            //    while (fs.Read(b, 0, b.Length) > 0)
-            //    {
-            //        MessageBox.Show(temp.GetString(b).ToString());
-            //    }
-            //}
-
-
-            //string content = String.Empty; ;
-
-            //FileStream fs = new FileStream(TestSelectPath, FileMode.Open,
-            //        FileAccess.Read);
-
-            //using (StreamReader streamReader = new StreamReader(fs, Encoding.ASCII))
-            //{
-            //    content = streamReader.ReadToEnd();
-            //}
-            //var br = new BinaryReader(File.OpenRead(TestSelectPath));
-            //byte[] buffer;
-
-            //// Marshall the header into a DBFHeader structure
-
-            ////textBox1.Text = content;
-            ////MessageBox.Show(content[6].ToString() + " \t" + content.Length.ToString());
-            //using (
-            //    Stream fis =
-            //        File.Open(TestSelectPath,
-            //                  FileMode.OpenOrCreate,
-            //                  FileAccess.ReadWrite))
-            //{
-            //    var reader = new DBFReader()
-            //    {
-            //        DataMemoLoc = Path.ChangeExtension(TestSelectPath, "DBT")
-            //    };
-
-            //    //var readValues = reader.AllRecords(new { F2 = default(decimal), F3 = default(string) });
-            //    var readValues = reader.DynamicAllRecords();
-            //    //Assert.That(readValues.First().F3, StartsWith(writtenValue), "Written Value not equaling Read");
-            //}
-
-        }
-
-
+        
 
     }
 }
