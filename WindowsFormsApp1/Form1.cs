@@ -285,166 +285,67 @@ namespace WindowsFormsApp1
             string TestSelectPath = @"D:\PointSoft Dn\Probation Project\20190321\DBT.DBF";
 
 
-            //DBFReader2 rd = new DBFReader2();
             //using (Stream fis = File.Open(TestSelectPath,
             //                            FileMode.OpenOrCreate,
             //                            FileAccess.ReadWrite))
             //{
-            //    using (var reader = new DBFReader(TestSelectPath)
+            //    using (var reader = new DBFReader(new MemoryStream(TestSelectPath))
             //    {
             //        DataMemoLoc = Path.ChangeExtension(TestSelectPath, "DBT")
             //    };
-            //    var readValues = reader.DynamicAllRecords();
+            //    //var readValues = reader.DynamicAllRecords();
             //};
 
 
-            using (
-                Stream fis =
-                    File.Open(TestSelectPath,
-                              FileMode.OpenOrCreate,
-                              FileAccess.ReadWrite))
-            {
-                var reader = new DBFReader(fis)
-                {
-                    DataMemoLoc = Path.ChangeExtension(TestSelectPath, "DBT")
-                };
+            //var reader = new DBFReader(TestSelectPath);
 
-                //var readValues = reader.AllRecords(new { F2 = default(decimal), F3 = default(string) });
-                var readValues = reader.DynamicAllRecords();
-                //Assert.That(readValues.First().F3, StartsWith(writtenValue), "Written Value not equaling Read");
-            }
+            //Open the stream and read it back.
+            //using (FileStream fs = File.OpenRead(TestSelectPath))
+            //{
+            //    byte[] b = new byte[1024];
+            //    UTF8Encoding temp = new UTF8Encoding(true);
+            //    while (fs.Read(b, 0, b.Length) > 0)
+            //    {
+            //        MessageBox.Show(temp.GetString(b).ToString());
+            //    }
+            //}
 
 
+            //string content = String.Empty; ;
+
+            //FileStream fs = new FileStream(TestSelectPath, FileMode.Open,
+            //        FileAccess.Read);
+
+            //using (StreamReader streamReader = new StreamReader(fs, Encoding.ASCII))
+            //{
+            //    content = streamReader.ReadToEnd();
+            //}
+            //var br = new BinaryReader(File.OpenRead(TestSelectPath));
+            //byte[] buffer;
+
+            //// Marshall the header into a DBFHeader structure
+
+            ////textBox1.Text = content;
+            ////MessageBox.Show(content[6].ToString() + " \t" + content.Length.ToString());
+            //using (
+            //    Stream fis =
+            //        File.Open(TestSelectPath,
+            //                  FileMode.OpenOrCreate,
+            //                  FileAccess.ReadWrite))
+            //{
+            //    var reader = new DBFReader()
+            //    {
+            //        DataMemoLoc = Path.ChangeExtension(TestSelectPath, "DBT")
+            //    };
+
+            //    //var readValues = reader.AllRecords(new { F2 = default(decimal), F3 = default(string) });
+            //    var readValues = reader.DynamicAllRecords();
+            //    //Assert.That(readValues.First().F3, StartsWith(writtenValue), "Written Value not equaling Read");
+            //}
 
         }
 
 
 
-
-        public DBFReader(Stream anIn)
-        {
-            try
-            {
-                _dataInputStream = new BinaryReader(anIn);
-                isClosed = false;
-                _header = new DBFHeader();
-                _header.Read(_dataInputStream);
-
-                /* it might be required to leap to the start of records at times */
-                int t_dataStartIndex = _header.HeaderLength
-                                       - (32 + (32 * _header.FieldArray.Length))
-                                       - 1;
-                if (t_dataStartIndex > 0)
-                {
-                    _dataInputStream.ReadBytes((t_dataStartIndex));
-                }
-            }
-            catch (IOException e)
-            {
-                throw new DBFException("Failed To Read DBF", e);
-            }
-        }
-
-        /**
-   Returns the number of records in the DBF.
-   */
-
-
-        public int RecordCount
-        {
-            get { return _header.NumberOfRecords; }
-        }
-
-        /**
-   Returns the asked Field. In case of an invalid index,
-   it returns a ArrayIndexOutofboundsException.
-
-   @param index. Index of the field. Index of the first field is zero.
-   */
-
-        public DBFField[] Fields
-        {
-            get { return _header.FieldArray; }
-        }
-
-        #region IDisposable Members
-
-        /// <summary>Performs application-defined tasks associated with freeing, releasing,
-        /// or resetting unmanaged resources.</summary>
-        /// <filterpriority>2</filterpriority>
-
-        #endregion
-
-
-        public string DataMemoLoc
-        {
-            get
-            {
-                return _dataMemoLoc;
-            }
-            set
-            {
-                _dataMemoLoc = value;
-            }
-        }
-
-        public override String ToString()
-        {
-            StringBuilder sb =
-                new StringBuilder(_header.Year + "/" + _header.Month + "/"
-                                  + _header.Day + "\n"
-                                  + "Total records: " + _header.NumberOfRecords +
-                                  "\nHeader length: " + _header.HeaderLength +
-                                  "");
-
-            for (int i = 0; i < _header.FieldArray.Length; i++)
-            {
-                sb.Append(_header.FieldArray[i].Name);
-                sb.Append("\n");
-            }
-
-            return sb.ToString();
-        }
-
-        public Object[] NextRecord()
-        {
-            return NextRecord(_selectFields, _orderedSelectFields);
-        }
-        public DBFReader(string anIn)
-        {
-            try
-            {
-                var fileStream = File.Open(anIn,
-                              FileMode.Open,
-                              FileAccess.Read,
-                              FileShare.ReadWrite);
-                var buff = new byte[2 * 1024 * 1024];
-                var count = fileStream.Read(buff, 0, buff.Length);
-                var memStream = new MemoryStream(buff, 0, count);
-                _dataInputStream = new BinaryReader(memStream);
-                //var dbtPath = Path.ChangeExtension(anIn, "dbt");
-                //if (File.Exists(dbtPath))
-                //{
-                //    _dataMemoLoc = dbtPath;
-                //}
-
-                isClosed = false;
-                _header = new DBFHeader();
-                _header.Read(_dataInputStream);
-
-                /* it might be required to leap to the start of records at times */
-                int t_dataStartIndex = _header.HeaderLength
-                                       - (32 + (32 * _header.FieldArray.Length))
-                                       - 1;
-                if (t_dataStartIndex > 0)
-                {
-                    _dataInputStream.ReadBytes((t_dataStartIndex));
-                }
-            }
-            catch (IOException ex)
-            {
-                throw new DBFException("Failed To Read DBF", ex);
-            }
-        }
     }
 }

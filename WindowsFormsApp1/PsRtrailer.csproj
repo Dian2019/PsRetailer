@@ -33,11 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetDBF, Version=5.0.4.0, Culture=neutral, PublicKeyToken=9c071727b589770e, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetDBF.5.0.4\lib\net35\DotNetDBF.dll</HintPath>
+    <Reference Include="DotNetDBF, Version=6.0.0.2, Culture=neutral, PublicKeyToken=9c071727b589770e, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetDBF.6.0.0.2\lib\net35\DotNetDBF.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetDBF.Enumerable, Version=5.0.4.0, Culture=neutral, PublicKeyToken=859f68cd621a0776, processorArchitecture=MSIL">
-      <HintPath>..\packages\dotnetdbf.enumerable.5.0.4\lib\net40\DotNetDBF.Enumerable.dll</HintPath>
+    <Reference Include="DotNetDBF.Enumerable, Version=6.0.0.2, Culture=neutral, PublicKeyToken=859f68cd621a0776, processorArchitecture=MSIL">
+      <HintPath>..\packages\dotnetdbf.enumerable.6.0.0.2\lib\net40\DotNetDBF.Enumerable.dll</HintPath>
     </Reference>
     <Reference Include="Dynamitey, Version=2.0.9.136, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6, processorArchitecture=MSIL">
       <HintPath>..\packages\Dynamitey.2.0.9.136\lib\net40\Dynamitey.dll</HintPath>
@@ -48,8 +48,8 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Annotations, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ComponentModel.Annotations.4.4.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -57,8 +57,8 @@
       <HintPath>..\packages\System.Data.Common.4.3.0\lib\net451\System.Data.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Data.SqlClient, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Data.SqlClient.4.3.0\lib\net46\System.Data.SqlClient.dll</HintPath>
+    <Reference Include="System.Data.SqlClient, Version=4.5.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SqlClient.4.6.1\lib\net461\System.Data.SqlClient.dll</HintPath>
     </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
@@ -76,7 +76,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBFReader2.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,7 +96,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
