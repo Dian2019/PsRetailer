@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
@@ -15,6 +13,11 @@ using DotNetDBF;
 using DotNetDBF.Enumerable;
 using System.Xml;
 using System.Security.Permissions;
+using System.Configuration;
+using System.Collections.Specialized;
+using System.Linq;
+using QRCoder;
+using System.Reflection;
 
 namespace WindowsFormsApp1
 {
@@ -32,10 +35,7 @@ namespace WindowsFormsApp1
         private static FileStream fs = new FileStream(@"D:\PointSoft Dn\Probation Project\mcb.txt", FileMode.OpenOrCreate, FileAccess.Write);
         private static StreamWriter m_streamWriter = new StreamWriter(fs);
         
-        private bool isClosed = true;
-        private BinaryReader _dataInputStream;
-        private DBFHeader _header;
-        private string _dataMemoLoc;
+        
 
         public Form1()
         {
@@ -46,16 +46,17 @@ namespace WindowsFormsApp1
         private void Form1_Load(object sender, EventArgs e)
         {
             DataTable dt = new DataTable();
+            
             dt = GetDataTable();
 
             int latestRecCount = dt.Rows.Count;
-            int latestNumber = Convert.ToInt16(dt.Rows[0]["Number"]);
+            int latestNumber = Convert.ToInt32(dt.Rows[0]["Number"]);
 
-            dataGridView1.DataSource = dt;
+            //dataGridView1.DataSource = dt;
 
             if (!File.Exists(xmlFile))
             {
-                CreateConfigurationFile(latestRecCount, latestNumber);
+                CreateConfigurationFile(dt, latestRecCount, latestNumber);
             }
             else
             {
@@ -91,11 +92,7 @@ namespace WindowsFormsApp1
         private void OnChanged(object source, FileSystemEventArgs e)
         {
             // Specify what is done when a file is changed, created, or deleted.
-            //Console.WriteLine("File: " + e.FullPath + " " + e.ChangeType);
-            //MessageBox.Show($"File: {e.FullPath} {e.ChangeType}");
             OnFileChange();
-
-
         }
 
         private void OnRenamed(object source, RenamedEventArgs e)
@@ -117,10 +114,11 @@ namespace WindowsFormsApp1
         private DataTable GetDataTable()
         {
             OleDbConnection dbfConnectionHandler = DbfConnection(@"D:\PointSoft Dn\Probation Project\20190321\");
+
             if (dbfConnectionHandler.State == ConnectionState.Open)
             {
                 OleDbCommand oCmd = dbfConnectionHandler.CreateCommand();
-                oCmd.CommandText = @"SELECT * FROM CTP.dbf WHERE number<999999 order by number DESC";
+                oCmd.CommandText = @"SELECT * FROM CTP.dbf WHERE NUMBER < 999999";
                 DataTable dt = new DataTable();
                 dt.Load(oCmd.ExecuteReader());
                 dbfConnectionHandler.Close();
@@ -144,11 +142,13 @@ namespace WindowsFormsApp1
 
                 if (latestRecCount > xmlRecordCount)
                 {
-                    for (var n = 0; n < dt.Rows.Count; n++)
-                    {
-                        val = dt.Rows[n]["Number"].ToString() + " : " + dt.Rows[n]["Shopcode"].ToString();
 
-                        if (Convert.ToInt16(dt.Rows[n]["Number"]) > xmlLastNumber) //Last Number = 5504 xmlLastNumber
+                    for (var n = xmlRecordCount; n < dt.Rows.Count; n++)
+                    {
+                        val = dt.Rows[n]["Number"].ToString() + " : " + dt.Rows[n]["Shopcode"].ToString()+" "+ dt.Rows[n]["Date"].ToString();
+                        val += " " + dt.Rows[n]["Time"].ToString();
+
+                        if (Convert.ToInt32(dt.Rows[n]["Number"]) > xmlLastNumber) //Last Number = 5504 xmlLastNumber
                         {
                             amt += Convert.ToDouble(dt.Rows[n]["Amount"]);
                             val += " : " + dt.Rows[n]["Amount"].ToString() + " :" + amt.ToString();
@@ -161,21 +161,22 @@ namespace WindowsFormsApp1
                             break;
                         }
                     }
-                    CreateConfigurationFile(_recCount: latestRecCount, _number: Convert.ToInt16(dt.Rows[0]["Number"]), update: true);
+                    CreateConfigurationFile(dt, recCount: latestRecCount, number: Convert.ToInt32(dt.Rows[xmlRecordCount]["Number"]), update: true);
 
                     m_streamWriter.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(), latestRecCount);
                     m_streamWriter.Flush();
+
+                    if (numOfBill >= 1 || amt >= 50)
+                    {
+                        PrintQRCode(val);
+                        Form2 f2 = new Form2();
+                        f2.ShowDialog();
+                    }
 
                     NotifyIcon1.Icon = SystemIcons.Application;
                     NotifyIcon1.Visible = true;
                     NotifyIcon1.BalloonTipText = DateTime.Now.ToLongTimeString();
                     NotifyIcon1.ShowBalloonTip(1000);
-
-                    //if (numOfBill >= 2 || amt >= 50)
-                    //{
-                    //    do some process
-                    //}
-                    //CreateConfigurationFile(_recCount: latestRecCount, update: true);
                 }
             }
         }
@@ -219,7 +220,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        public void CreateConfigurationFile(long? _recCount = null, int? _number = null, bool? update = false)
+        public void CreateConfigurationFile(DataTable dt, long? recCount = null,  int? number = null, bool? update = false)
         {
             if (update == false)
             {
@@ -233,8 +234,11 @@ namespace WindowsFormsApp1
                 using (XmlWriter writer = XmlWriter.Create(xmlFile, settings))
                 {
                     writer.WriteStartElement("root");
-                    writer.WriteElementString("recordcount", _recCount.ToString());
-                    writer.WriteElementString("number", _number.ToString());
+                    writer.WriteElementString("recordcount", recCount.ToString());
+                    for (var i = 0; i < dt.Columns.Count; i++)
+                    {
+                        writer.WriteElementString(dt.Columns[i].ToString(), dt.Rows[0][i].ToString());
+                    }
                     writer.WriteEndElement();
                     writer.Flush();
                 }
@@ -243,21 +247,24 @@ namespace WindowsFormsApp1
             {
                 XmlDocument doc = new XmlDocument();
                 doc.Load(xmlFile);
+                //doc.Load(@"C: \Users\HBTan\source\repos\PsRetailer\WindowsFormsApp1\App.config");
 
                 var idElement = doc.GetElementsByTagName("recordcount");
 
-                if (_recCount != null && idElement != null)
+                if (recCount != null && idElement != null)
                 {
-                    idElement[0].FirstChild.Value = _recCount.ToString();
+                    idElement[0].FirstChild.Value = recCount.ToString();
                 }
 
-                idElement = doc.GetElementsByTagName("number");
-
-                if (_number != null && idElement != null)
+                for (var i = 0; i < dt.Columns.Count; i++)
                 {
-                    idElement[0].FirstChild.Value = _number.ToString();
-                }
+                    idElement = doc.GetElementsByTagName(dt.Columns[i].ToString());
 
+                    if (dt.Rows[Convert.ToInt32(recCount) - 1][i].ToString() != null)
+                    {
+                        idElement[0].InnerText = dt.Rows[Convert.ToInt32(recCount) - 1][i].ToString();
+                    }
+                }
                 doc.Save(xmlFile);
             }
         }
@@ -265,16 +272,18 @@ namespace WindowsFormsApp1
 
         public void AssignValue(String recCount, String lastNumber)
         {
-            xmlRecordCount = Convert.ToInt16(recCount);
-            xmlLastNumber = Convert.ToInt16(lastNumber);
+            xmlRecordCount = Convert.ToInt32(recCount);
+            xmlLastNumber = Convert.ToInt32(lastNumber);
         }
 
         public void ProcessXML(String xmlText)
         {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
+
             XmlDocument _doc = new XmlDocument();
-            _doc.Load(xmlText);  
+            _doc.Load(xmlText);
             XmlNodeList _recordcount = _doc.GetElementsByTagName("recordcount");
-            XmlNodeList _number = _doc.GetElementsByTagName("number");
+            XmlNodeList number = _doc.GetElementsByTagName("number");
             XmlNodeList _connection_path = _doc.GetElementsByTagName("connection_path");
             XmlNodeList _filename = _doc.GetElementsByTagName("filename");
             XmlNodeList _timerinterval = _doc.GetElementsByTagName("timerinterval");
@@ -282,10 +291,36 @@ namespace WindowsFormsApp1
             for (int _i = 0; _i < _recordcount.Count; ++_i)
             {
                 AssignValue(_recordcount[_i].InnerText,
-                _number[_i].InnerText);
+                number[_i].InnerText);
             }
         }
-        
 
+        public void PrintQRCode(string text1)
+        {
+            Form2 f2 = new Form2();
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode("The text which should be encoded.", QRCodeGenerator.ECCLevel.Q);
+            QRCode qrCode = new QRCode(qrCodeData);
+            Bitmap qrCodeImage = qrCode.GetGraphic(6);
+            f2.pictureBox1.Image = qrCodeImage;
+            f2.pictureBox1.Visible = true;
+            f2.Show();
+        }
+
+        public static void GetConfigurationUsingSection()
+        {
+            var applicationSettings = ConfigurationManager.GetSection("ApplicationSettings") as NameValueCollection;
+            if (applicationSettings.Count == 0)
+            {
+                Console.WriteLine("Application Settings are not defined");
+            }
+            else
+            {
+                foreach (var key in applicationSettings.AllKeys)
+                {
+                    Console.WriteLine(key + " = " + applicationSettings[key]);
+                }
+            }
+        }
     }
 }
