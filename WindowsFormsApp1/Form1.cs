@@ -22,18 +22,7 @@ namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        //Program p = new Program();
-        static string val;
-        static double amt;
-        static int xmlRecordCount;
-        static int xmlLastNumber;
-        static string xmlURL;
-        static string xmlEnableQRCode;
-
         private static string xmlFile = @"D:\PointSoft Dn\Probation Project\CTP.xml";
-        //private static FileStream fs = new FileStream(@"D:\PointSoft Dn\Probation Project\mcb.txt", FileMode.OpenOrCreate, FileAccess.Write);
-        //private static StreamWriter m_streamWriter = new StreamWriter(fs);
-
         FileMonitor pwatcher = new FileMonitor();
 
         public Form1()
@@ -50,8 +39,6 @@ namespace WindowsFormsApp1
 
             int latestRecCount = dt.Rows.Count;
             int latestNumber = Convert.ToInt32(dt.Rows[latestRecCount - 1]["Number"]);
-
-            //dataGridView1.DataSource = dt;
 
             if (!File.Exists(xmlFile))
             {
@@ -140,10 +127,6 @@ namespace WindowsFormsApp1
         {
             Form3 f3 = new Form3();
             f3.Show();
-            //Form2 f2 = new Form2();
-            //Form2.PrintOut();
-            //ff2.Show();
-
         }
     }
 }

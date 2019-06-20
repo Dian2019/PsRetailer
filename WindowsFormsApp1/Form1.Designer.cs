@@ -167,9 +167,9 @@
             // 
             this.Button2.Location = new System.Drawing.Point(575, 461);
             this.Button2.Name = "Button2";
-            this.Button2.Size = new System.Drawing.Size(133, 41);
+            this.Button2.Size = new System.Drawing.Size(181, 41);
             this.Button2.TabIndex = 12;
-            this.Button2.Text = "Open form 3";
+            this.Button2.Text = "Manual Create Record";
             this.Button2.UseVisualStyleBackColor = true;
             this.Button2.Click += new System.EventHandler(this.Button2_Click);
             // 
