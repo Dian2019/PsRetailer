@@ -103,6 +103,7 @@ namespace WindowsFormsApp1
                             //val += dt.Rows[n]["Number"].ToString() + " : " + dt.Rows[n]["Amount"].ToString() + " :" + amt.ToString();
                             num += "Number = " + dt.Rows[n]["Number"].ToString();
                             m_streamWriter.WriteLine(val);
+                            m_streamWriter.WriteLine(num);
                             m_streamWriter.Flush();
                             numOfBill += 1;
                         }
@@ -119,7 +120,7 @@ namespace WindowsFormsApp1
                     if ((numOfBill >= 1 || amt >= 50) && xmlInfo[InfoKey.EnableQRCode] == "Enable")
                     {
                         Form2 f2 = new Form2();
-                        f2.PrintOut(val, "www.pointsoft.com.my", num);
+                        f2.PrintOut(val, xmlInfo[FileMonitor.InfoKey.Url], num);
                     }
 
                     //NotifyIcon1.Icon = SystemIcons.Application;
