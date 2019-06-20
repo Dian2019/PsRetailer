@@ -39,3 +39,4 @@ C:\Users\HBTan\Source\Repos\PsRetailer\WindowsFormsApp1\obj\Debug\WindowsFormsAp
 C:\Users\HBTan\Source\Repos\PsRetailer\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
 C:\Users\HBTan\Source\Repos\PsRetailer\WindowsFormsApp1\obj\Debug\PsRtrailer.csprojAssemblyReference.cache
 C:\Users\HBTan\Source\Repos\PsRetailer\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form2.resources
+C:\Users\HBTan\Source\Repos\PsRetailer\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Form3.resources
