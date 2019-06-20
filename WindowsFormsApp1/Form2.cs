@@ -68,6 +68,9 @@ namespace WindowsFormsApp1
 
         private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
+            Size size = TextRenderer.MeasureText(textBox1.Text, textBox1.Font);
+            textBox1.Width = size.Width;
+            textBox1.Height = size.Height;
             //Rectangle pageArea = e.PageBounds;
             //e.Graphics.DrawImage(pictureBox1.Image, 10, 10, pictureBox1.Width, pictureBox1.Height);
             e.Graphics.DrawImage(pictureBox1.Image, (e.PageBounds.Width - pictureBox1.Image.Width)/2,10, pictureBox1.Width, pictureBox1.Height);
