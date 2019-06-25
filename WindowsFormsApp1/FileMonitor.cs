@@ -114,7 +114,7 @@ namespace WindowsFormsApp1
                     }
 
                     CreateConfigurationFile(dt, recCount: latestRecCount, number: Convert.ToInt32(dt.Rows[xmlRecordCount]["Number"]), update: true);
-                    m_streamWriter.WriteLine("{0} {1}", DateTime.Now.ToLongTimeString(), latestRecCount);
+                    m_streamWriter.WriteLine("{0} {1}", DateTime.Now.ToString(), latestRecCount);
                     m_streamWriter.Flush();
 
                     if ((numOfBill >= 1 || amt >= 50) && xmlInfo[InfoKey.EnableQRCode] == "Enable")
@@ -148,20 +148,22 @@ namespace WindowsFormsApp1
             return null;
         }
 
-        //public static string ProcessXML(string xmlText)
         public Dictionary<InfoKey, string> ProcessXML(string xmlText)
         {
-            //Dictionary xmlInfo;
             Configuration config = ConfigurationManager.OpenExeConfiguration(Application.ExecutablePath);
 
             XmlDocument doc = new XmlDocument();
             doc.Load(xmlText);
             XmlNodeList recordCount = doc.GetElementsByTagName("recordcount");
             XmlNodeList number = doc.GetElementsByTagName("number");
-            XmlNodeList connection_path = doc.GetElementsByTagName("connection_path");
-            XmlNodeList fileName = doc.GetElementsByTagName("filename");
             XmlNodeList url = doc.GetElementsByTagName("url");
             XmlNodeList enableQRCode = doc.GetElementsByTagName("enableQRCode");
+            XmlNodeList enableMinimize = doc.GetElementsByTagName("EnableMinimize");
+            XmlNodeList message = doc.GetElementsByTagName("Message");
+            XmlNodeList connectionPath = doc.GetElementsByTagName("ConnectionPath");
+            XmlNodeList filePath = doc.GetElementsByTagName("FilePath");
+            XmlNodeList fileName = doc.GetElementsByTagName("FileName");
+            XmlNodeList xmlFile = doc.GetElementsByTagName("XmlFile");
 
             //var xmlInfo = new Dictionary<InfoKey, string>();
             for (int i = 0; i < recordCount.Count; ++i)
@@ -175,7 +177,13 @@ namespace WindowsFormsApp1
                     { InfoKey.RecordCount, recordCount[i].InnerText },
                     { InfoKey.Number, number[i].InnerText },
                     { InfoKey.Url, url[i].InnerText },
-                    { InfoKey.EnableQRCode, enableQRCode[i].InnerText }
+                    { InfoKey.EnableQRCode, enableQRCode[i].InnerText },
+                    { InfoKey.EnableMinimize, enableMinimize[i].InnerText },
+                    { InfoKey.Message, message[i].InnerText },
+                    { InfoKey.ConnectionPath, connectionPath[i].InnerText },
+                    { InfoKey.FilePath, filePath[i].InnerText },
+                    { InfoKey.FileName, fileName[i].InnerText },
+                    { InfoKey.XmlFile, xmlFile[i].InnerText }
                 };
             }
             return xmlInfo;
@@ -203,8 +211,9 @@ namespace WindowsFormsApp1
             xmlEnableQRCode = enableQRCode;
         }
 
-        public static void CreateConfigurationFile(DataTable dt, long? recCount = null, int? number = null, string url = "", bool? enableQRCode = true, bool? update = false)
+        public static void CreateConfigurationFile(DataTable dt, long? recCount = null, int? number = null, string url = "", bool? enableQRCode = true, bool? enableMinimize = true, string message = "", string connectionPath = "", string filePath = "", string fileName = "", string xmlFileName = "", bool? update = false)
         {
+            string enable;
             if (update == false)
             {
                 XmlWriterSettings settings = new XmlWriterSettings
@@ -214,25 +223,30 @@ namespace WindowsFormsApp1
                     CloseOutput = true,
                     OmitXmlDeclaration = true
                 };
-                using (XmlWriter writer = XmlWriter.Create(xmlFile, settings))
+                using (XmlWriter writer = XmlWriter.Create(@filePath + xmlFileName, settings))
                 {
-
                     writer.WriteStartElement("root");
                     writer.WriteElementString("recordcount", recCount.ToString());
                     writer.WriteElementString("url", url);
 
-                    if (enableQRCode == true)
-                    {
-                        writer.WriteElementString("enableQRCode", "Enable");
-                    }
-                    else
-                    {
-                        writer.WriteElementString("enableQRCode", "Disable");
-                    }
+                    enable = (enableQRCode == true) ? "Enable" : "Disable";
+                    writer.WriteElementString("enableQRCode", enable);
 
-                    for (var i = 0; i < dt.Columns.Count; i++)
-                    {
-                        writer.WriteElementString(dt.Columns[i].ToString(), dt.Rows[Convert.ToInt32(recCount) - 1][i].ToString());
+                    enable = (enableMinimize == true) ? "Enable" : "Disable";
+                    writer.WriteElementString("EnableMinimize", enable);
+
+                    writer.WriteElementString("Message", message);
+                    writer.WriteElementString("ConnectionPath", connectionPath);
+                    writer.WriteElementString("FilePath", filePath);
+                    writer.WriteElementString("FileName", fileName);
+                    writer.WriteElementString("XmlFile", xmlFileName);
+
+                    if (dt != null)
+                    { 
+                        for (var i = 0; i < dt.Columns.Count; i++)
+                        {
+                            writer.WriteElementString(dt.Columns[i].ToString(), dt.Rows[Convert.ToInt32(recCount) - 1][i].ToString());
+                        }
                     }
                     writer.WriteEndElement();
                     writer.Flush();
@@ -246,30 +260,23 @@ namespace WindowsFormsApp1
 
                 var idElement = doc.GetElementsByTagName("recordcount");
 
-                if (recCount != null && idElement != null)
-                {
-                    idElement[0].FirstChild.Value = recCount.ToString();
-                }
+                if (recCount != null && idElement != null) doc.GetElementsByTagName("recordcount")[0].FirstChild.Value = recCount.ToString();
 
-                if (url != "")
-                {
-                    idElement = doc.GetElementsByTagName("url");
-                    idElement[0].FirstChild.Value = url;
-                }
+                if (url != "") doc.GetElementsByTagName("url")[0].FirstChild.Value = url;
 
-                if (enableQRCode != null)
-                {
-                    idElement = doc.GetElementsByTagName("enableQRCode");
+                if (enableQRCode != null) doc.GetElementsByTagName("enableQRCode")[0].FirstChild.Value = (enableQRCode == true) ? "Enable" : "Disable";
 
-                    if (enableQRCode == true)
-                    {
-                        idElement[0].FirstChild.Value = "Enable";
-                    }
-                    else
-                    {
-                        idElement[0].FirstChild.Value = "Disable";
-                    }
-                }
+                if (enableMinimize != null) doc.GetElementsByTagName("enableMinimize")[0].FirstChild.Value = (enableMinimize == true) ? "Enable" : "Disable";
+
+                if (message != "") doc.GetElementsByTagName("Message")[0].FirstChild.Value = message;
+
+                if (connectionPath != "") doc.GetElementsByTagName("ConnectionPath")[0].FirstChild.Value = connectionPath;
+
+                if (filePath != "") doc.GetElementsByTagName("FilePath")[0].FirstChild.Value = filePath;
+
+                if (fileName != "") doc.GetElementsByTagName("FileName")[0].FirstChild.Value = fileName;
+
+                if (xmlFileName != "") doc.GetElementsByTagName("XmlFile")[0].FirstChild.Value = xmlFileName;
 
                 if (dt != null)
                 {

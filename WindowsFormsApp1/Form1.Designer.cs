@@ -35,9 +35,21 @@
             this.mTxtLastNum = new System.Windows.Forms.MaskedTextBox();
             this.lblRecCount = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.BtnOpenXml = new System.Windows.Forms.Button();
+            this.chckMinimize = new System.Windows.Forms.CheckBox();
+            this.lblXml = new System.Windows.Forms.Label();
+            this.lblFileName = new System.Windows.Forms.Label();
+            this.txtXml = new System.Windows.Forms.TextBox();
+            this.txtFileName = new System.Windows.Forms.TextBox();
+            this.lblFilePath = new System.Windows.Forms.Label();
+            this.txtFilePath = new System.Windows.Forms.TextBox();
+            this.lblConnectionPath = new System.Windows.Forms.Label();
+            this.txtConnectionPath = new System.Windows.Forms.TextBox();
+            this.lblMsg = new System.Windows.Forms.Label();
+            this.txtMsg = new System.Windows.Forms.TextBox();
             this.lblUrl = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblLastNum = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.Button2 = new System.Windows.Forms.Button();
@@ -60,7 +72,7 @@
             this.chkQRCode.AutoSize = true;
             this.chkQRCode.Checked = true;
             this.chkQRCode.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkQRCode.Location = new System.Drawing.Point(24, 42);
+            this.chkQRCode.Location = new System.Drawing.Point(21, 34);
             this.chkQRCode.Name = "chkQRCode";
             this.chkQRCode.Size = new System.Drawing.Size(155, 24);
             this.chkQRCode.TabIndex = 4;
@@ -101,18 +113,136 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.BtnOpenXml);
+            this.groupBox1.Controls.Add(this.chckMinimize);
+            this.groupBox1.Controls.Add(this.lblXml);
+            this.groupBox1.Controls.Add(this.lblFileName);
+            this.groupBox1.Controls.Add(this.txtXml);
+            this.groupBox1.Controls.Add(this.txtFileName);
+            this.groupBox1.Controls.Add(this.lblFilePath);
+            this.groupBox1.Controls.Add(this.txtFilePath);
+            this.groupBox1.Controls.Add(this.lblConnectionPath);
+            this.groupBox1.Controls.Add(this.txtConnectionPath);
+            this.groupBox1.Controls.Add(this.lblMsg);
+            this.groupBox1.Controls.Add(this.txtMsg);
             this.groupBox1.Controls.Add(this.lblUrl);
             this.groupBox1.Controls.Add(this.txtUrl);
-            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.lblLastNum);
             this.groupBox1.Controls.Add(this.lblRecCount);
             this.groupBox1.Controls.Add(this.txtRecordCount);
             this.groupBox1.Controls.Add(this.mTxtLastNum);
             this.groupBox1.Location = new System.Drawing.Point(35, 46);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(818, 182);
+            this.groupBox1.Size = new System.Drawing.Size(818, 463);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "File information";
+            // 
+            // BtnOpenXml
+            // 
+            this.BtnOpenXml.Location = new System.Drawing.Point(706, 379);
+            this.BtnOpenXml.Name = "BtnOpenXml";
+            this.BtnOpenXml.Size = new System.Drawing.Size(75, 34);
+            this.BtnOpenXml.TabIndex = 22;
+            this.BtnOpenXml.Text = "Open";
+            this.BtnOpenXml.UseVisualStyleBackColor = true;
+            this.BtnOpenXml.Click += new System.EventHandler(this.BtnOpenXml_Click);
+            // 
+            // chckMinimize
+            // 
+            this.chckMinimize.AutoSize = true;
+            this.chckMinimize.Checked = true;
+            this.chckMinimize.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chckMinimize.Location = new System.Drawing.Point(167, 422);
+            this.chckMinimize.Name = "chckMinimize";
+            this.chckMinimize.Size = new System.Drawing.Size(172, 24);
+            this.chckMinimize.TabIndex = 5;
+            this.chckMinimize.Text = "Minimize on startup";
+            this.chckMinimize.UseVisualStyleBackColor = true;
+            // 
+            // lblXml
+            // 
+            this.lblXml.AutoSize = true;
+            this.lblXml.Location = new System.Drawing.Point(29, 379);
+            this.lblXml.Name = "lblXml";
+            this.lblXml.Size = new System.Drawing.Size(110, 20);
+            this.lblXml.TabIndex = 21;
+            this.lblXml.Text = "XML file name";
+            // 
+            // lblFileName
+            // 
+            this.lblFileName.AutoSize = true;
+            this.lblFileName.Location = new System.Drawing.Point(29, 338);
+            this.lblFileName.Name = "lblFileName";
+            this.lblFileName.Size = new System.Drawing.Size(78, 20);
+            this.lblFileName.TabIndex = 20;
+            this.lblFileName.Text = "File name";
+            // 
+            // txtXml
+            // 
+            this.txtXml.Location = new System.Drawing.Point(167, 379);
+            this.txtXml.Name = "txtXml";
+            this.txtXml.Size = new System.Drawing.Size(533, 26);
+            this.txtXml.TabIndex = 19;
+            // 
+            // txtFileName
+            // 
+            this.txtFileName.Location = new System.Drawing.Point(167, 332);
+            this.txtFileName.Name = "txtFileName";
+            this.txtFileName.Size = new System.Drawing.Size(533, 26);
+            this.txtFileName.TabIndex = 18;
+            this.txtFileName.Text = "mcb.txt";
+            // 
+            // lblFilePath
+            // 
+            this.lblFilePath.AutoSize = true;
+            this.lblFilePath.Location = new System.Drawing.Point(29, 294);
+            this.lblFilePath.Name = "lblFilePath";
+            this.lblFilePath.Size = new System.Drawing.Size(70, 20);
+            this.lblFilePath.TabIndex = 17;
+            this.lblFilePath.Text = "File path";
+            // 
+            // txtFilePath
+            // 
+            this.txtFilePath.Location = new System.Drawing.Point(167, 288);
+            this.txtFilePath.Name = "txtFilePath";
+            this.txtFilePath.Size = new System.Drawing.Size(614, 26);
+            this.txtFilePath.TabIndex = 16;
+            this.txtFilePath.Text = "D:\\PointSoft Dn\\Probation Project\\";
+            // 
+            // lblConnectionPath
+            // 
+            this.lblConnectionPath.AutoSize = true;
+            this.lblConnectionPath.Location = new System.Drawing.Point(29, 244);
+            this.lblConnectionPath.Name = "lblConnectionPath";
+            this.lblConnectionPath.Size = new System.Drawing.Size(126, 20);
+            this.lblConnectionPath.TabIndex = 15;
+            this.lblConnectionPath.Text = "Connection path";
+            // 
+            // txtConnectionPath
+            // 
+            this.txtConnectionPath.Location = new System.Drawing.Point(167, 238);
+            this.txtConnectionPath.Name = "txtConnectionPath";
+            this.txtConnectionPath.Size = new System.Drawing.Size(614, 26);
+            this.txtConnectionPath.TabIndex = 14;
+            this.txtConnectionPath.Text = "D:\\PointSoft Dn\\Probation Project\\20190321\\";
+            // 
+            // lblMsg
+            // 
+            this.lblMsg.AutoSize = true;
+            this.lblMsg.Location = new System.Drawing.Point(29, 195);
+            this.lblMsg.Name = "lblMsg";
+            this.lblMsg.Size = new System.Drawing.Size(74, 20);
+            this.lblMsg.TabIndex = 13;
+            this.lblMsg.Text = "Message";
+            // 
+            // txtMsg
+            // 
+            this.txtMsg.Location = new System.Drawing.Point(167, 185);
+            this.txtMsg.Multiline = true;
+            this.txtMsg.Name = "txtMsg";
+            this.txtMsg.Size = new System.Drawing.Size(614, 30);
+            this.txtMsg.TabIndex = 12;
             // 
             // lblUrl
             // 
@@ -132,30 +262,30 @@
             this.txtUrl.TabIndex = 10;
             this.txtUrl.Text = "www.pointsoft.com.my";
             // 
-            // label1
+            // lblLastNum
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(29, 87);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 20);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Last number";
+            this.lblLastNum.AutoSize = true;
+            this.lblLastNum.Location = new System.Drawing.Point(29, 87);
+            this.lblLastNum.Name = "lblLastNum";
+            this.lblLastNum.Size = new System.Drawing.Size(98, 20);
+            this.lblLastNum.TabIndex = 9;
+            this.lblLastNum.Text = "Last number";
             // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.chkQRCode);
-            this.groupBox2.Location = new System.Drawing.Point(35, 289);
+            this.groupBox2.Location = new System.Drawing.Point(35, 515);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(818, 100);
+            this.groupBox2.Size = new System.Drawing.Size(818, 80);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Print setup";
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(93, 461);
+            this.btnUpdate.Location = new System.Drawing.Point(94, 612);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(158, 41);
             this.btnUpdate.TabIndex = 11;
@@ -165,7 +295,7 @@
             // 
             // Button2
             // 
-            this.Button2.Location = new System.Drawing.Point(575, 461);
+            this.Button2.Location = new System.Drawing.Point(575, 612);
             this.Button2.Name = "Button2";
             this.Button2.Size = new System.Drawing.Size(241, 41);
             this.Button2.TabIndex = 12;
@@ -182,7 +312,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(910, 625);
+            this.ClientSize = new System.Drawing.Size(910, 685);
             this.Controls.Add(this.Button2);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.groupBox2);
@@ -211,10 +341,22 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lblUrl;
         private System.Windows.Forms.TextBox txtUrl;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblLastNum;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button Button2;
         private System.IO.FileSystemWatcher FileSystemWatcher1;
+        private System.Windows.Forms.Label lblMsg;
+        private System.Windows.Forms.TextBox txtMsg;
+        private System.Windows.Forms.CheckBox chckMinimize;
+        private System.Windows.Forms.Label lblXml;
+        private System.Windows.Forms.Label lblFileName;
+        private System.Windows.Forms.TextBox txtXml;
+        private System.Windows.Forms.TextBox txtFileName;
+        private System.Windows.Forms.Label lblFilePath;
+        private System.Windows.Forms.TextBox txtFilePath;
+        private System.Windows.Forms.Label lblConnectionPath;
+        private System.Windows.Forms.TextBox txtConnectionPath;
+        private System.Windows.Forms.Button BtnOpenXml;
     }
 }
 

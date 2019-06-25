@@ -1,4 +1,125 @@
-﻿<ctp>
-    <recordcount>167</recordcount>
-    <number>5504</number>
-</ctp>
+﻿<root>
+    <recordcount>206</recordcount>
+    <url>www.pointsoft.com.my</url>
+    <enableQRCode>Enable</enableQRCode>
+    <EnableMinimize>Enable</EnableMinimize>
+    <Message />
+    <ConnectionPath>D:\PointSoft Dn\Probation Project\20190321\</ConnectionPath>
+    <FilePath>D:\PointSoft Dn\Probation Project\</FilePath>
+    <FileName>mcb.txt</FileName>
+    <XmlFile>CTP.xml</XmlFile>
+    <id>000</id>
+    <number>5545</number>
+    <group>@</group>
+    <shopcode>CR204 </shopcode>
+    <zone>      </zone>
+    <date>2019/06/13</date>
+    <time>10:00:00</time>
+    <payby>5</payby>
+    <amount>10.15</amount>
+    <receive>10.15</receive>
+    <points>0.00</points>
+    <currency>   </currency>
+    <rate>0.0000</rate>
+    <f_receive>0.00</f_receive>
+    <tn>3A        </tn>
+    <pax>2</pax>
+    <staff>Cashier 2 </staff>
+    <ordertype>2</ordertype>
+    <tdate>2019/06/13</tdate>
+    <ttime>10:00:00</ttime>
+    <cashier>Cashier 2 </cashier>
+    <customer>Customer        </customer>
+    <viptype>    </viptype>
+    <vip>                </vip>
+    <disctype>0</disctype>
+    <dcharge>0.00</dcharge>
+    <discount>0.00</discount>
+    <sc_rate>5.0</sc_rate>
+    <rx>0122L     </rx>
+    <ry>2</ry>
+    <scharge>1.00</scharge>
+    <cardname>                    </cardname>
+    <cardnum>                    </cardnum>
+    <cardtype>                </cardtype>
+    <addrid>0</addrid>
+    <cnt>0</cnt>
+    <tax>0.00</tax>
+    <tax1>1.00</tax1>
+    <tax2>2.00</tax2>
+    <tax3>3.00</tax3>
+    <rounding>0.00</rounding>
+    <spflag>1</spflag>
+    <encash_id>1  </encash_id>
+    <rider>a           </rider>
+    <ref1>            </ref1>
+    <ref2>               </ref2>
+    <ref3>          </ref3>
+    <timer1>0</timer1>
+    <timer2>0</timer2>
+    <rev>0</rev>
+    <pcount>0</pcount>
+    <polled> </polled>
+    <analysis1>        </analysis1>
+    <sync>True</sync>
+    <syncdate>0         </syncdate>
+    <syncid>q  </syncid>
+    <calcost>False</calcost>
+    <irewards>0</irewards>
+    <irewardrd>0</irewardrd>
+    <ixrewards>0</ixrewards>
+    <ixrewardrd>0</ixrewardrd>
+    <speccard>          </speccard>
+    <oldrv>0</oldrv>
+    <oldrr>0</oldrr>
+    <osource>0</osource>
+    <timer2a>0</timer2a>
+    <bpaamt>0.00</bpaamt>
+    <nobpaamt>0.00</nobpaamt>
+    <old>True</old>
+    <bumped>False</bumped>
+    <dau1> </dau1>
+    <dau2> </dau2>
+    <location>0</location>
+    <sba>0</sba>
+    <block>     </block>
+    <flat>     </flat>
+    <floor>     </floor>
+    <room>     </room>
+    <num>     </num>
+    <cca_data> </cca_data>
+    <xpoints1>0.00</xpoints1>
+    <xpoints2>0.00</xpoints2>
+    <pdpoints>0.00</pdpoints>
+    <unote>                    </unote>
+    <minchg>0.00</minchg>
+    <govinv>                    </govinv>
+    <govinv2>                    </govinv2>
+    <desc1>                </desc1>
+    <desc2>                </desc2>
+    <pname1> </pname1>
+    <pname2> </pname2>
+    <mapcode>            </mapcode>
+    <xxref1> </xxref1>
+    <mxtt>     </mxtt>
+    <mxeo> </mxeo>
+    <mxdv> </mxdv>
+    <tblkey>                    </tblkey>
+    <sv>False</sv>
+    <qsnum>000  </qsnum>
+    <qstime>              </qstime>
+    <cpriv>          </cpriv>
+    <mpriv>          </mpriv>
+    <itcount>0</itcount>
+    <lasttid>   </lasttid>
+    <odflag>0</odflag>
+    <epdata1>                                                  </epdata1>
+    <epdata2> </epdata2>
+    <traceno>                    </traceno>
+    <appcode>                    </appcode>
+    <batchno>                    </batchno>
+    <crmtype>0</crmtype>
+    <bstamp1>0</bstamp1>
+    <bstamp2>0</bstamp2>
+    <bstamp3>0</bstamp3>
+</root>

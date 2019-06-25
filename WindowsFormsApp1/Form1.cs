@@ -40,16 +40,23 @@ namespace WindowsFormsApp1
             int latestRecCount = dt.Rows.Count;
             int latestNumber = Convert.ToInt32(dt.Rows[latestRecCount - 1]["Number"]);
 
-            if (!File.Exists(xmlFile))
+            if (txtXml.Text == "")
             {
-                FileMonitor.CreateConfigurationFile(dt, latestRecCount, latestNumber, txtUrl.Text, chkQRCode.Checked);
+                BtnOpenXml_Click(this,null);
+
+                if (!File.Exists(@txtXml.Text))
+                {
+                    FileMonitor.CreateConfigurationFile(dt, latestRecCount, latestNumber, txtUrl.Text, chkQRCode.Checked, chckMinimize.Checked, txtMsg.Text, txtConnectionPath.Text, txtFilePath.Text, txtFileName.Text, txtXml.Text);
+                }
             }
 
-            var xmlInfo = pwatcher.ProcessXML(xmlFile);
+            var xmlInfo = pwatcher.ProcessXML(@txtXml.Text);
  
-            txtRecordCount.Text = xmlInfo[FileMonitor.InfoKey.RecordCount];// latestRecCount.ToString();
-            mTxtLastNum.Text = xmlInfo[FileMonitor.InfoKey.Number];// latestNumber.ToString();
-            txtUrl.Text = xmlInfo[FileMonitor.InfoKey.Url];// xmlURL;
+            txtRecordCount.Text = xmlInfo[FileMonitor.InfoKey.RecordCount];
+            mTxtLastNum.Text = xmlInfo[FileMonitor.InfoKey.Number];
+            txtUrl.Text = xmlInfo[FileMonitor.InfoKey.Url];
+            //xmlInfo[FileMonitor.InfoKey.EnableQRCode] = "Enable" ? chkQRCode.Checked = true : chkQRCode.Checked = false;
+
             if (xmlInfo[FileMonitor.InfoKey.EnableQRCode] == "Enable")
             {
                 chkQRCode.Checked = true;
@@ -58,6 +65,21 @@ namespace WindowsFormsApp1
             {
                 chkQRCode.Checked = false;
             }
+
+            if (xmlInfo[FileMonitor.InfoKey.EnableMinimize] == "Enable")
+            {
+                chckMinimize.Checked = true;
+            }
+            else
+            {
+                chckMinimize.Checked = false;
+            }
+
+            txtMsg.Text = xmlInfo[FileMonitor.InfoKey.Message];
+            txtConnectionPath.Text = xmlInfo[FileMonitor.InfoKey.ConnectionPath];
+            txtFilePath.Text = xmlInfo[FileMonitor.InfoKey.FilePath];
+            txtFileName.Text = xmlInfo[FileMonitor.InfoKey.FileName];
+            txtXml.Text = xmlInfo[FileMonitor.InfoKey.XmlFile];
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -118,7 +140,14 @@ namespace WindowsFormsApp1
         {
             if (MessageBox.Show("Are you sure to update the configuration?", "Update configuration parameter", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                FileMonitor.CreateConfigurationFile(null, url: txtUrl.Text, enableQRCode: chkQRCode.Checked, update: true);
+                if (File.Exists(@txtXml.Text))
+                {
+                    FileMonitor.CreateConfigurationFile(null, url: txtUrl.Text, enableQRCode: chkQRCode.Checked, enableMinimize: chckMinimize.Checked, message: txtMsg.Text, connectionPath: txtConnectionPath.Text, filePath: txtFilePath.Text, fileName: txtFileName.Text, xmlFileName: txtXml.Text, update: true);
+                }
+                else
+                {
+                    FileMonitor.CreateConfigurationFile(dt: null, recCount: Convert.ToInt32(txtRecordCount.Text), number: Convert.ToInt32(mTxtLastNum.Text), url: txtUrl.Text, enableQRCode: chkQRCode.Checked, enableMinimize: chckMinimize.Checked, message: txtMsg.Text, connectionPath: txtConnectionPath.Text, filePath: txtFilePath.Text, fileName: txtFileName.Text, xmlFileName: txtXml.Text);
+                }
             }
             this.WindowState = FormWindowState.Minimized;
         }
@@ -127,6 +156,15 @@ namespace WindowsFormsApp1
         {
             Form3 f3 = new Form3();
             f3.Show();
+        }
+
+        private void BtnOpenXml_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog oFD = new OpenFileDialog() { Filter = "XML|*.xml", ValidateNames = true })
+            {
+                if (oFD.ShowDialog() == DialogResult.OK)
+                    txtXml.Text = oFD.FileName;
+            }
         }
     }
 }
