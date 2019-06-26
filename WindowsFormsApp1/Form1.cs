@@ -24,6 +24,7 @@ namespace WindowsFormsApp1
     {
         private static string xmlFile = @"D:\PointSoft Dn\Probation Project\CTP.xml";
         private static FileMonitor Watcher = new FileMonitor();
+        private static DataConnection DbfConnection = new DataConnection();
 
         public Form1()
         {
@@ -73,6 +74,7 @@ namespace WindowsFormsApp1
             txtXml.Text = xmlInfo[FileMonitor.XmlKey.XmlFile];
 
             Watcher.CreateFileWatcher(xmlInfo[FileMonitor.XmlKey.ConnectionPath], xmlInfo[FileMonitor.XmlKey.FileWatcherFilter]);
+            //OleDbConnection dbfConnectionHandler = DataConnection.Odbcon(xmlInfo[FileMonitor.XmlKey.ConnectionPath]);
         }
 
         private void Form1_Resize(object sender, EventArgs e)

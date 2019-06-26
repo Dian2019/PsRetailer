@@ -27,7 +27,7 @@ namespace WindowsFormsApp1
         private static readonly string ConnectionPath = @"D:\PointSoft Dn\Probation Project\20190321\";
         private static readonly string FileWathcherFilter = "CTP.dbf";
         private static readonly string FilePath = @"D:\Records.txt";
-        private static readonly string XmlFile = @"D:\PsRtrailerConfig.xml";
+        private static readonly string XmlFile = @"C:\Users\HBTan\source\repos\WindowsFormsApp1\WindowsFormsApp1\App.config.xml";
         public static string ActXmlFile;
 
         [STAThread]
@@ -41,12 +41,15 @@ namespace WindowsFormsApp1
 
             if (File.Exists(XmlFile))
             {
+                
                 xmlInfo = Watcher.ProcessXML(XmlFile);
                 ActXmlFile = xmlInfo[FileMonitor.XmlKey.XmlFile];
+
             }
             else
             {
-                Watcher.CreateConfigurationFile(url: Url, connectionPath: ConnectionPath, fileWatcherFilter: FileWathcherFilter, textFilePath: FilePath, xmlFileName: XmlFile);
+                Watcher.AddNewKey();
+                //Watcher.CreateConfigurationFile(url: Url, connectionPath: ConnectionPath, fileWatcherFilter: FileWathcherFilter, textFilePath: FilePath, xmlFileName: XmlFile);
                 ActXmlFile = XmlFile;
             }
 

@@ -16,7 +16,7 @@ namespace WindowsFormsApp1
 {
     public class FileMonitor
     {
-        private static string xmlFile = @"D:\PointSoft Dn\Probation Project\CTP.xml";
+        private static string xmlFile = @"C:\Users\HBTan\source\repos\WindowsFormsApp1\WindowsFormsApp1\App.config.xml";
         private static FileStream fs = new FileStream(@"D:\PointSoft Dn\Probation Project\mcb.txt", FileMode.OpenOrCreate, FileAccess.Write);
         private static StreamWriter m_streamWriter = new StreamWriter(fs);
         string val;
@@ -85,7 +85,7 @@ namespace WindowsFormsApp1
         {
             var xmlInfo = ProcessXML(xmlFile);
 
-            var dt = GetDataTable();
+            var dt = DataConnection.GetDataTable();
             int numOfBill = 0;
             int latestRecCount = dt.Rows.Count;
 
@@ -168,7 +168,7 @@ namespace WindowsFormsApp1
             XmlNodeList filePath = doc.GetElementsByTagName("FilePath");
             XmlNodeList xmlFile = doc.GetElementsByTagName("XmlFile");
 
-            //var xmlInfo = new Dictionary<XmlKey, string>();
+            var xmlInfo = new Dictionary<XmlKey, string>();
             //for (int i = 0; i < recordCount.Count; ++i)
             {
                 /*AssignValue(recordCount[i].InnerText,
@@ -205,6 +205,25 @@ namespace WindowsFormsApp1
             xmlURL = url;
             xmlEnableQRCode = enableQRCode;
         }*/
+
+        public void AddNewKey()
+        {
+            var configPath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            AppDomain.CurrentDomain.SetData("APP_CONFIG_FILE", @"C:\Users\HBTan\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.Config");
+            configPath = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+
+            // create new node <add key="Region" value="Canterbury" />
+            var nodeRegion = xmlDoc.CreateElement("add");
+            nodeRegion.SetAttribute("key", "Region");
+            nodeRegion.SetAttribute("value", "Canterbury");
+
+            xmlDoc.SelectSingleNode("//connectionStrings").AppendChild(nodeRegion);
+            xmlDoc.Save(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
+
+            ConfigurationManager.RefreshSection("//connectionStrings");
+        }
 
         //public static void CreateConfigurationFile(DataTable dt, long? recCount = null, int? number = null, string url = "", bool? enableQRCode = true, bool? enableMinimize = true, string message = "", string connectionPath = "", string filePath = "", string fileName = "", string xmlFileName = "", bool? update = false)
         public void CreateConfigurationFile(string url = "", bool? enableQRCode = true, string connectionPath = "", string fileWatcherFilter = "", string textFilePath = "", string xmlFileName = "")
