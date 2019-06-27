@@ -12,6 +12,7 @@ using System.Xml;
 using System.Configuration;
 using System.Collections.Specialized;
 using QRCoder;
+using WindowsFormsApp1.Models;
 
 
 namespace WindowsFormsApp1
@@ -23,81 +24,50 @@ namespace WindowsFormsApp1
         /// </summary>
         /// 
         private static FileMonitor Watcher = new FileMonitor();
-        private static readonly string Url = "www.pointsoft.com.my";
-        private static readonly string ConnectionPath = @"D:\PointSoft Dn\Probation Project\20190321\";
-        private static readonly string FileWathcherFilter = "CTP.dbf";
-        private static readonly string FilePath = @"D:\Records.txt";
+        //private static readonly string Url = "www.pointsoft.com.my";
+        //private static readonly string ConnectionPath = @"D:\PointSoft Dn\Probation Project\20190321\";
+        //private static readonly string FileWathcherFilter = "CTP.dbf";
+        //private static readonly string FilePath = @"D:\Records.txt";
         private static readonly string XmlFile = @"D:\PsRtrailerConfig.xml";
-        public static string ActXmlFile;
+        //public static string ActXmlFile;
+        public static PsRtrailerConfigModel ConfigModel = new PsRtrailerConfigModel();
 
         [STAThread]
         static void Main()
         {
-            //var xmlInfo = new Dictionary<XmlKey, string>;
-            var xmlInfo = new Dictionary<FileMonitor.XmlKey, string>();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            //if (!File.Exists(XmlFile))
+            //{
+            //    Watcher.CreateConfigModelationFile(url: Url, connectionPath: ConnectionPath, fileWatcherFilter: FileWathcherFilter, textFilePath: FilePath, xmlFileName: XmlFile);
+            //    //ActXmlFile = XmlFile;
+            //}
+
             if (File.Exists(XmlFile))
             {
-                xmlInfo = Watcher.ProcessXML(XmlFile);
-                ActXmlFile = xmlInfo[FileMonitor.XmlKey.XmlFile];
+                ReadXml();
+                Application.Run(new Form1());
             }
             else
             {
-                Watcher.CreateConfigurationFile(url: Url, connectionPath: ConnectionPath, fileWatcherFilter: FileWathcherFilter, textFilePath: FilePath, xmlFileName: XmlFile);
-                ActXmlFile = XmlFile;
+                MessageBox.Show(string.Format("Configuration file {0} not found!", XmlFile));
+                Application.Exit();
             }
-
-            //CreateFileWatcher(xmlInfo[FileMonitor.XmlKey.ConnectionPath]);
-            //Init();
-            Application.Run(new Form1());
         }
 
-        public static Dictionary<FileMonitor.XmlKey, string> XmlInfo1()
+        public static void ReadXml()
         {
             var xmlInfo = new Dictionary<FileMonitor.XmlKey, string>();
-
-            return xmlInfo = Watcher.ProcessXML(ActXmlFile);// !! always same as XmlFile
+            xmlInfo = Watcher.ProcessXML(XmlFile);
+            ConfigModel.Url = xmlInfo[FileMonitor.XmlKey.Url];
+            ConfigModel.EnableQRCode = xmlInfo[FileMonitor.XmlKey.EnableQRCode];
+            ConfigModel.ConnectionPath = xmlInfo[FileMonitor.XmlKey.ConnectionPath];
+            ConfigModel.FileWatcherFilter = xmlInfo[FileMonitor.XmlKey.FileWatcherFilter];
+            ConfigModel.FilePath = xmlInfo[FileMonitor.XmlKey.FilePath];
+            ConfigModel.XmlFile = xmlInfo[FileMonitor.XmlKey.XmlFile];
+            ConfigModel.SmartCode = xmlInfo[FileMonitor.XmlKey.SmartCode];
+            ConfigModel.LongDateTime = Convert.ToInt64(xmlInfo[FileMonitor.XmlKey.StateOfDateTime]);
         }
-
-
-        //static void Init()
-        //{
-        //    string directory = @"D:\PointSoft Dn\Probation Project\20190321\";
-        //    Program._watcher = new FileSystemWatcher(directory);
-        //    Program._watcher.Changed +=
-        //        new FileSystemEventHandler(Program._watcher_Changed);
-        //    Program._watcher.EnableRaisingEvents = true;
-        //    Program._watcher.IncludeSubdirectories = true;
-        //}
-
-        //public static void CreateFileWatcher(string path)
-        //{
-        //    FileSystemWatcher watcher = new FileSystemWatcher();
-        //    watcher.Path = path;
-        //    watcher.NotifyFilter = NotifyFilters.LastAccess | NotifyFilters.LastWrite
-        //       | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-        //    watcher.Filter = "CTP.dbf";
-
-        //    watcher.Changed += new FileSystemEventHandler(OnChanged);
-        //    watcher.Created += new FileSystemEventHandler(OnChanged);
-        //    watcher.Deleted += new FileSystemEventHandler(OnChanged);
-        //    watcher.Renamed += new RenamedEventHandler(OnRenamed);
-
-        //    watcher.EnableRaisingEvents = true;
-        //}
-
-        //private static void OnChanged(object source, FileSystemEventArgs e)
-        //{
-        //    FileMonitor fileMon = new FileMonitor();
-        //    fileMon.OnFileChange();
-        //}
-
-        //private static void OnRenamed(object source, RenamedEventArgs e)
-        //{
-        //    MessageBox.Show($"File: {e.ChangeType} renamed to {e.FullPath}"); //("File: {0} renamed to {1}", e.OldFullPath, e.FullPath);
-        //}
     }
 }

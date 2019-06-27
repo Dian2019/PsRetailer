@@ -28,7 +28,7 @@ namespace WindowsFormsApp1
             //printDocument1.PrintPage += PrintPage;
             //printDialog1.Document = printDocument1;
             //PrintPreviewDialog1.Document = printDialog1.Document;
-            PrintPreviewDialog1.Document = printDocument1;
+            PrintPreviewDialog1.Document = PrintDocument1;
             PrintPreviewDialog1.Show();
         }
 
@@ -51,7 +51,7 @@ namespace WindowsFormsApp1
             return qrCodeImage;
         }
 
-        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
+        private void PrintDocument1_PrintPage(object sender, PrintPageEventArgs e)
         {
             Size size = TextRenderer.MeasureText(textBox1.Text, textBox1.Font);
             textBox1.Width = size.Width;

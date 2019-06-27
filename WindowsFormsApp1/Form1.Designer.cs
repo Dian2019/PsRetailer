@@ -31,9 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.NotifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.chkQRCode = new System.Windows.Forms.CheckBox();
-            this.txtRecordCount = new System.Windows.Forms.TextBox();
-            this.mTxtLastNum = new System.Windows.Forms.MaskedTextBox();
-            this.lblRecCount = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.BtnOpenTextFile = new System.Windows.Forms.Button();
             this.BtnOpenXml = new System.Windows.Forms.Button();
@@ -47,9 +44,8 @@
             this.txtConnectionPath = new System.Windows.Forms.TextBox();
             this.lblUrl = new System.Windows.Forms.Label();
             this.txtUrl = new System.Windows.Forms.TextBox();
-            this.lblLastNum = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btnUpdate = new System.Windows.Forms.Button();
+            this.BtnUpdate = new System.Windows.Forms.Button();
             this.Button2 = new System.Windows.Forms.Button();
             this.FileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.groupBox1.SuspendLayout();
@@ -77,36 +73,6 @@
             this.chkQRCode.Text = "Enable QR Code";
             this.chkQRCode.UseVisualStyleBackColor = true;
             // 
-            // txtRecordCount
-            // 
-            this.txtRecordCount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtRecordCount.Location = new System.Drawing.Point(167, 28);
-            this.txtRecordCount.Name = "txtRecordCount";
-            this.txtRecordCount.ReadOnly = true;
-            this.txtRecordCount.Size = new System.Drawing.Size(341, 26);
-            this.txtRecordCount.TabIndex = 6;
-            // 
-            // mTxtLastNum
-            // 
-            this.mTxtLastNum.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.mTxtLastNum.Location = new System.Drawing.Point(167, 81);
-            this.mTxtLastNum.Name = "mTxtLastNum";
-            this.mTxtLastNum.ReadOnly = true;
-            this.mTxtLastNum.Size = new System.Drawing.Size(341, 26);
-            this.mTxtLastNum.TabIndex = 7;
-            this.mTxtLastNum.ValidatingType = typeof(int);
-            // 
-            // lblRecCount
-            // 
-            this.lblRecCount.AutoSize = true;
-            this.lblRecCount.Location = new System.Drawing.Point(29, 34);
-            this.lblRecCount.Name = "lblRecCount";
-            this.lblRecCount.Size = new System.Drawing.Size(108, 20);
-            this.lblRecCount.TabIndex = 8;
-            this.lblRecCount.Text = "Record Count";
-            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -123,10 +89,6 @@
             this.groupBox1.Controls.Add(this.txtConnectionPath);
             this.groupBox1.Controls.Add(this.lblUrl);
             this.groupBox1.Controls.Add(this.txtUrl);
-            this.groupBox1.Controls.Add(this.lblLastNum);
-            this.groupBox1.Controls.Add(this.lblRecCount);
-            this.groupBox1.Controls.Add(this.txtRecordCount);
-            this.groupBox1.Controls.Add(this.mTxtLastNum);
             this.groupBox1.Location = new System.Drawing.Point(35, 46);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(818, 408);
@@ -235,15 +197,6 @@
             this.txtUrl.Size = new System.Drawing.Size(614, 26);
             this.txtUrl.TabIndex = 10;
             // 
-            // lblLastNum
-            // 
-            this.lblLastNum.AutoSize = true;
-            this.lblLastNum.Location = new System.Drawing.Point(29, 87);
-            this.lblLastNum.Name = "lblLastNum";
-            this.lblLastNum.Size = new System.Drawing.Size(98, 20);
-            this.lblLastNum.TabIndex = 9;
-            this.lblLastNum.Text = "Last number";
-            // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -256,15 +209,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Print setup";
             // 
-            // btnUpdate
+            // BtnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(94, 612);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(158, 41);
-            this.btnUpdate.TabIndex = 11;
-            this.btnUpdate.Text = "Update File Setting";
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            this.BtnUpdate.Location = new System.Drawing.Point(94, 612);
+            this.BtnUpdate.Name = "BtnUpdate";
+            this.BtnUpdate.Size = new System.Drawing.Size(158, 41);
+            this.BtnUpdate.TabIndex = 11;
+            this.BtnUpdate.Text = "Update File Setting";
+            this.BtnUpdate.UseVisualStyleBackColor = true;
+            this.BtnUpdate.Click += new System.EventHandler(this.BtnUpdate_Click);
             // 
             // Button2
             // 
@@ -287,7 +240,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(910, 685);
             this.Controls.Add(this.Button2);
-            this.Controls.Add(this.btnUpdate);
+            this.Controls.Add(this.BtnUpdate);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.MinimumSize = new System.Drawing.Size(932, 681);
@@ -307,15 +260,11 @@
         #endregion
         private System.Windows.Forms.NotifyIcon NotifyIcon1;
         private System.Windows.Forms.CheckBox chkQRCode;
-        private System.Windows.Forms.TextBox txtRecordCount;
-        private System.Windows.Forms.MaskedTextBox mTxtLastNum;
-        private System.Windows.Forms.Label lblRecCount;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lblUrl;
         private System.Windows.Forms.TextBox txtUrl;
-        private System.Windows.Forms.Label lblLastNum;
-        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Button BtnUpdate;
         private System.Windows.Forms.Button Button2;
         private System.IO.FileSystemWatcher FileSystemWatcher1;
         private System.Windows.Forms.Label lblXml;

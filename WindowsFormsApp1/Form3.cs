@@ -19,6 +19,7 @@ namespace WindowsFormsApp1
 
         private void BtnCreate_Click(object sender, EventArgs e)
         {
+            var dataConn = new DataConnection();
             DataTable dt = new DataTable();
             FileMonitor fm = new FileMonitor();
 
@@ -53,7 +54,7 @@ namespace WindowsFormsApp1
             val += "'" + customer.Text + "',";
             val += "'" + vipType.Text + "','',0,0,0,5.0,'0122L',2,1,'','','',0,0,0,1,2,3,0,1,'1','a','','','',0,0,0,0,'','',1,'0','q',0,0,0,0,0,'',0,0,0,0,0,0,1,0,'','',0,0,";
             val += "'','','','','','',0,0,0,'',0,'','','','','','','','','','','','',0,'000','','','',0,'',0,'','','','','',0,0,0,0)";
-            dt = fm.CreateDataTable(val1, val);
+            dt = dataConn.CreateDataTable(val1, val);
             fm.OnFileChange();
             this.Close();
         }

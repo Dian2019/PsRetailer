@@ -6,7 +6,6 @@ using System.Text;
 using System.Data.OleDb;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TableDependency;
 using TableDependency.SqlClient;
 using DotNetDBF;
 using DotNetDBF.Enumerable;
@@ -15,15 +14,15 @@ using System.Security.Permissions;
 using System.Configuration;
 using System.Collections.Specialized;
 using System.Linq;
-using QRCoder;
-using System.Reflection;
+using WindowsFormsApp1.Models;
 
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        private static string xmlFile = @"D:\PointSoft Dn\Probation Project\CTP.xml";
+        //private static string xmlFile = @"D:\PointSoft Dn\Probation Project\CTP.xml";
         private static FileMonitor Watcher = new FileMonitor();
+
 
         public Form1()
         {
@@ -33,13 +32,6 @@ namespace WindowsFormsApp1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //DataTable dt = new DataTable();
-            //dt = FileMonitor.GetDataTable();
-
-            //var dt = FileMonitor.GetDataTable();
-
-            //int latestRecCount = dt.Rows.Count;
-            //int latestNumber = Convert.ToInt32(dt.Rows[latestRecCount - 1]["Number"]);
 
             //if (txtXml.Text == "")
             //{
@@ -51,14 +43,10 @@ namespace WindowsFormsApp1
             //    }
             //}
 
-            //var xmlInfo = Watcher.ProcessXML(@txtXml.Text);
-            var xmlInfo = Program.XmlInfo1();
 
-            //txtRecordCount.Text = xmlInfo[FileMonitor.XmlKey.RecordCount];
-            //mTxtLastNum.Text = xmlInfo[FileMonitor.XmlKey.Number];
-            txtUrl.Text = xmlInfo[FileMonitor.XmlKey.Url];
+            txtUrl.Text = Program.ConfigModel.Url;// xmlInfo[FileMonitor.XmlKey.Url];
 
-            if (xmlInfo[FileMonitor.XmlKey.EnableQRCode] == "Enable")
+            if (Program.ConfigModel.EnableQRCode == "Enable")
             {
                 chkQRCode.Checked = true;
             }
@@ -67,13 +55,14 @@ namespace WindowsFormsApp1
                 chkQRCode.Checked = false;
             }
 
-            txtConnectionPath.Text = xmlInfo[FileMonitor.XmlKey.ConnectionPath];
-            txtFileWatcherFilter.Text = xmlInfo[FileMonitor.XmlKey.FileWatcherFilter];
-            txtFilePath.Text = xmlInfo[FileMonitor.XmlKey.FilePath];
-            txtXml.Text = xmlInfo[FileMonitor.XmlKey.XmlFile];
-
-            Watcher.CreateFileWatcher(xmlInfo[FileMonitor.XmlKey.ConnectionPath], xmlInfo[FileMonitor.XmlKey.FileWatcherFilter]);
+            txtConnectionPath.Text = Program.ConfigModel.ConnectionPath;
+            txtFileWatcherFilter.Text = Program.ConfigModel.FileWatcherFilter;
+            txtFilePath.Text = Program.ConfigModel.FilePath;
+            txtXml.Text = Program.ConfigModel.XmlFile;
+            
+            Watcher.CreateFileWatcher(Program.ConfigModel.ConnectionPath, Program.ConfigModel.FileWatcherFilter);
         }
+
 
         private void Form1_Resize(object sender, EventArgs e)
         {
@@ -113,7 +102,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private void BtnUpdate_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are you sure to update the configuration?", "Update configuration parameter", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
@@ -121,10 +110,10 @@ namespace WindowsFormsApp1
                 {
                     Watcher.UpdateConfigurationFile(url: txtUrl.Text, enableQRCode: chkQRCode.Checked, connectionPath: txtConnectionPath.Text, fileWatcherFilter: txtFileWatcherFilter.Text, textFilePath: txtFilePath.Text, xmlFileName: txtXml.Text);
                 }
-                else
-                {
-                    Watcher.CreateConfigurationFile(url: txtUrl.Text, enableQRCode: chkQRCode.Checked, connectionPath: txtConnectionPath.Text, fileWatcherFilter: txtFileWatcherFilter.Text, textFilePath: txtFilePath.Text, xmlFileName: txtXml.Text);
-                }
+                //else
+                //{
+                //    Watcher.CreateConfigurationFile(url: txtUrl.Text, enableQRCode: chkQRCode.Checked, connectionPath: txtConnectionPath.Text, fileWatcherFilter: txtFileWatcherFilter.Text, textFilePath: txtFilePath.Text, xmlFileName: txtXml.Text);
+                //}
             }
             this.WindowState = FormWindowState.Minimized;
         }
@@ -140,10 +129,11 @@ namespace WindowsFormsApp1
             using (OpenFileDialog oFD = new OpenFileDialog() { Filter = "XML|*.xml", ValidateNames = true })
             {
                 if (oFD.ShowDialog() == DialogResult.OK)
+                {
                     txtXml.Text = oFD.FileName;
+                }
                 else
                 {
-                    
                     this.Dispose(true);
                 }
             }
